@@ -1,5 +1,5 @@
 import 'package:cartvia_project/data/repositories/shopping_list_repository.dart';
-import 'package:cartvia_project/models/shopping_list.dart';
+import 'package:cartvia_project/models/shopping_list_model.dart';
 import 'package:flutter/foundation.dart';
 
 class ShoppingListViewModel extends ChangeNotifier {
@@ -8,11 +8,11 @@ class ShoppingListViewModel extends ChangeNotifier {
 
   final ShoppingListRepository _repository;
 
-  List<ShoppingList> _shoppingList = const [];
+  List<ShoppingListModel> _shoppingList = const [];
   bool _isLoading = false;
   String? _errorMessage;
 
-  List<ShoppingList> get shoppingList => _shoppingList;
+  List<ShoppingListModel> get shoppingList => _shoppingList;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get hasShoppingList => _shoppingList.isNotEmpty;

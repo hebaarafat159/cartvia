@@ -1,4 +1,4 @@
-import 'package:cartvia_project/models/shopping_list.dart';
+import 'package:cartvia_project/models/shopping_list_model.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +62,7 @@ class ShoppingListView extends StatelessWidget {
 class _ShoppingList extends StatelessWidget {
   const _ShoppingList({required this.shoppingList});
 
-  final ShoppingList shoppingList;
+  final ShoppingListModel shoppingList;
 
   @override
   Widget build(BuildContext context) {
