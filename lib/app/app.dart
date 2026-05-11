@@ -1,6 +1,7 @@
 import 'package:cartvia_project/data/api_service.dart';
 import 'package:cartvia_project/data/repositories/shopping_list_repository.dart';
 import 'package:cartvia_project/viewmodels/home_view_model.dart';
+import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:cartvia_project/views/home_view.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,12 @@ class MyApp extends StatelessWidget {
           create: (context) => ShoppingListViewModel(
             repository: context.read<ShoppingListRepository>(),
           )..loadShoppingList(),
+        ),
+        ChangeNotifierProxyProvider<ShoppingListViewModel, ProductsViewModel>(
+          create: (_) => ProductsViewModel(),
+          update: (_, shoppingListViewModel, productsViewModel) =>
+              (productsViewModel ?? ProductsViewModel())
+                ..updateShoppingLists(shoppingListViewModel.shoppingList),
         ),
         Provider(create: (_) => const HomeViewModel()),
       ],

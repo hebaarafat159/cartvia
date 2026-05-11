@@ -11,18 +11,15 @@ class ShoppingListViewModel extends ChangeNotifier {
   List<ShoppingListModel> _shoppingList = const [];
   bool _isLoading = false;
   String? _errorMessage;
-  String? _selectedListId;
 
   List<ShoppingListModel> get shoppingList => _shoppingList;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get hasShoppingList => _shoppingList.isNotEmpty;
-  String? get selectedListId => _selectedListId;
 
   Future<void> loadShoppingList() async {
     _isLoading = true;
     _errorMessage = null;
-    _selectedListId = null;
     notifyListeners();
 
     try {
@@ -30,15 +27,24 @@ class ShoppingListViewModel extends ChangeNotifier {
       // TODO remove testing data
       _shoppingList = [
         ShoppingListModel(
-            id: "iuefiufew8763872",
-            title: "Monthly",
-            description: "Every Month"),
+          id: "iuefiufew8763872",
+          title: "Monthly",
+          description: "Every Month",
+          products: const ["Milk", "Eggs", "Bread", "Coffee", "Apples"],
+        ),
         ShoppingListModel(
-            id: "iuefiufew8775872", title: "Birthday", description: "Birthday"),
+          id: "iuefiufew8775872",
+          title: "Birthday",
+          description: "Birthday",
+          products: const ["Cake", "Candles", "Juice", "Chips"],
+        ),
         ShoppingListModel(
-            id: "iuefswiufew8763872", title: "Home", description: "Home LIst"),
+          id: "iuefswiufew8763872",
+          title: "Home",
+          description: "Home LIst",
+          products: const ["Detergent", "Paper Towels", "Soap"],
+        ),
       ];
-      if (hasShoppingList) _selectedListId = _shoppingList[0].id;
       //TODO End testing Data
     } catch (error) {
       _errorMessage = 'Unable to load Shopping List.\n$error';
