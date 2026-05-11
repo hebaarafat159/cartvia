@@ -19,39 +19,34 @@ class ProductsListView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          shoppingList.title,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+            "${shoppingList.title} List items",
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          shoppingList.description,
-          style: TextStyle(
-            color: Colors.grey.shade700,
+          IconButton(
+            onPressed: () {
+              // TODO handle add new product for a list
+            },
+            icon: const Icon(Icons.add),
           ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          "Products",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
+        ]),
+        const SizedBox(height: 20),
         Expanded(
           child: productsViewModel.products.isEmpty
-              ? const Center(
-                  child: Text("No products available for this shopping list."),
-                )
+              ? const Text("No products available for this shopping list.")
               : ListView.separated(
                   itemCount: productsViewModel.products.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     final product = productsViewModel.products[index];
+                    final details = [
+                      if (product.quantity > 0) '${product.quantity}',
+                      if (product.measurement.isNotEmpty) product.measurement,
+                    ].join(' ');
 
                     return Container(
                       padding: const EdgeInsets.all(16),
@@ -61,29 +56,55 @@ class ProductsListView extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: 36,
                             height: 36,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE9D6CA),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${index + 1}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                            child: Checkbox(
+                              value: product.bring,
+                              activeColor: const Color(0xFFB84E2A),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
+                              onChanged: (value) {
+                                if (value == null) return;
+                                productsViewModel.setProductBring(
+                                  productId: product.id,
+                                  bring: value,
+                                );
+                              },
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              product,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                if (product.description.isNotEmpty ||
+                                    details.isNotEmpty)
+                                  const SizedBox(height: 4),
+                                if (product.description.isNotEmpty)
+                                  Text(
+                                    product.description,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                if (details.isNotEmpty)
+                                  Text(
+                                    details,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         ],

@@ -1,8 +1,10 @@
+import 'package:cartvia_project/models/product_model.dart';
+
 class ShoppingListModel {
   final String id;
   final String title;
   final String description;
-  final List<String> products;
+  final List<ProductModel> products;
 
   ShoppingListModel({
     required this.id,
@@ -19,7 +21,21 @@ class ShoppingListModel {
       title: (json['title'] ?? 'Untitled course').toString(),
       description: (json['description'] ?? '').toString(),
       products: productsJson is List
-          ? productsJson.map((product) => product.toString()).toList()
+          ? productsJson
+              .map(
+                (product) => switch (product) {
+                  Map<String, dynamic> value => ProductModel.fromJson(value),
+                  _ => ProductModel(
+                      id: '',
+                      title: product.toString(),
+                      description: '',
+                      quantity: 0,
+                      measurement: '',
+                      bring: false,
+                    ),
+                },
+              )
+              .toList()
           : const [],
     );
   }
