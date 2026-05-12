@@ -44,91 +44,101 @@ class ProductsListView extends StatelessWidget {
         Expanded(
           child: productsViewModel.products.isEmpty
               ? Text(localizations.noProductsAvailableForShoppingList)
-              : ListView.separated(
-                  itemCount: productsViewModel.products.length,
-                  separatorBuilder: (_, __) =>
-                      Padding(
+              : DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.radiusLarge),
+                  ),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.radiusLarge),
+                    child: ListView.separated(
+                      itemCount: productsViewModel.products.length,
+                      separatorBuilder: (_, __) => Padding(
                         padding: AppSpacing.dividerIndent,
                         child: Divider(
-                          height: AppSpacing.section,
+                          height: 1,
+                          thickness: 1,
                           color: AppColors.divider,
                         ),
                       ),
-                  itemBuilder: (context, index) {
-                    final product = productsViewModel.products[index];
-                    final details = [
-                      if (product.quantity > 0) '${product.quantity}',
-                      if (product.measurement.isNotEmpty) product.measurement,
-                    ].join(' ');
+                      itemBuilder: (context, index) {
+                        final product = productsViewModel.products[index];
+                        final details = [
+                          if (product.quantity > 0) '${product.quantity}',
+                          if (product.measurement.isNotEmpty)
+                            product.measurement,
+                        ].join(' ');
 
-                    return Container(
-                      padding: AppSpacing.cardPadding,
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius:
-                            BorderRadius.circular(AppSizes.radiusLarge),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: AppSizes.checkboxSize,
-                            height: AppSizes.checkboxSize,
-                            child: Checkbox(
-                              value: product.bring,
-                              activeColor: AppColors.primaryAccent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSizes.radiusSmall),
-                              ),
-                              onChanged: (value) {
-                                if (value == null) return;
-                                productsViewModel.setProductBring(
-                                  productId: product.id,
-                                  bring: value,
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.large),
-                          _ProductImage(imageUrl: product.primaryImage),
-                          const SizedBox(width: AppSpacing.large),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product.title,
-                                  style: const TextStyle(
-                                    fontSize: AppSizes.sectionLabelFont,
-                                    fontWeight: FontWeight.w500,
+                        return Padding(
+                          padding: AppSpacing.cardPadding,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: AppSizes.checkboxSize,
+                                height: AppSizes.checkboxSize,
+                                child: Checkbox(
+                                  value: product.bring,
+                                  activeColor: AppColors.primaryAccent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      AppSizes.radiusSmall,
+                                    ),
                                   ),
+                                  onChanged: (value) {
+                                    if (value == null) return;
+                                    productsViewModel.setProductBring(
+                                      productId: product.id,
+                                      bring: value,
+                                    );
+                                  },
                                 ),
-                                if (product.description.isNotEmpty ||
-                                    details.isNotEmpty)
-                                  const SizedBox(height: AppSpacing.xSmall),
-                                if (product.description.isNotEmpty)
-                                  Text(
-                                    product.description,
-                                    style: TextStyle(
-                                      color: AppColors.textSecondary,
+                              ),
+                              const SizedBox(width: AppSpacing.large),
+                              _ProductImage(imageUrl: product.primaryImage),
+                              const SizedBox(width: AppSpacing.large),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.title,
+                                      style: const TextStyle(
+                                        fontSize: AppSizes.sectionLabelFont,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                if (details.isNotEmpty)
-                                  Text(
-                                    details,
-                                    style: TextStyle(
-                                      color: AppColors.textTertiary,
-                                      fontSize: AppSizes.bodySmallFont,
-                                    ),
-                                  ),
-                              ],
-                            ),
+                                    if (product.description.isNotEmpty ||
+                                        details.isNotEmpty)
+                                      const SizedBox(
+                                        height: AppSpacing.xSmall,
+                                      ),
+                                    if (product.description.isNotEmpty)
+                                      Text(
+                                        product.description,
+                                        style: TextStyle(
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    if (details.isNotEmpty)
+                                      Text(
+                                        details,
+                                        style: TextStyle(
+                                          color: AppColors.textTertiary,
+                                          fontSize: AppSizes.bodySmallFont,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
         ),
         Padding(
