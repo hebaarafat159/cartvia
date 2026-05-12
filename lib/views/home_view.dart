@@ -51,10 +51,12 @@ class MyHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // waiting loading dialoge
                   if (shoppingListViewModel.isLoading)
                     const Center(
                       child: CircularProgressIndicator(),
                     )
+                  // show error message for loading shopping list
                   else if (shoppingListViewModel.errorMessage != null)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,10 +73,12 @@ class MyHome extends StatelessWidget {
                         ),
                       ],
                     )
+                  // show empty shoppling list
                   else if (shoppingLists.isEmpty)
                     Center(
                       child: Text("No shopping lists available."),
                     )
+                  // show shoping list
                   else
                     const Text(
                       "Choose a shopping list",
