@@ -80,13 +80,24 @@ class MyHome extends StatelessWidget {
                     )
                   // show shoping list
                   else
-                    const Text(
-                      "Choose a shopping list",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Choose a shopping list",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // TODO handle add new product for a list
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ]),
+
                   if (shoppingLists.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
