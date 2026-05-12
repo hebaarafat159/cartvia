@@ -1,3 +1,4 @@
+import 'package:cartvia_project/l10n/app_localizations.dart';
 import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,12 +8,13 @@ class ProductsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     final productsViewModel = context.watch<ProductsViewModel>();
     final shoppingList = productsViewModel.selectedShoppingList;
 
     if (shoppingList == null) {
-      return const Center(
-        child: Text("Select a shopping list to view its products."),
+      return Center(
+        child: Text(localizations.selectShoppingListToViewProducts),
       );
     }
 
@@ -21,7 +23,7 @@ class ProductsListView extends StatelessWidget {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            "${shoppingList.title} List items",
+            localizations.shoppingListItemsTitle(shoppingList.title),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -31,13 +33,14 @@ class ProductsListView extends StatelessWidget {
             onPressed: () {
               // TODO handle add new product for a list
             },
+            tooltip: localizations.addProductTooltip,
             icon: const Icon(Icons.add),
           ),
         ]),
         const SizedBox(height: 20),
         Expanded(
           child: productsViewModel.products.isEmpty
-              ? const Text("No products available for this shopping list.")
+              ? Text(localizations.noProductsAvailableForShoppingList)
               : ListView.separated(
                   itemCount: productsViewModel.products.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),

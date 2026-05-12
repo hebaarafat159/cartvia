@@ -1,4 +1,5 @@
-import 'package:cartvia_project/viewmodels/home_view_model.dart';
+import 'package:cartvia_project/app/app.dart';
+import 'package:cartvia_project/l10n/app_localizations.dart';
 import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:cartvia_project/views/products_list_view.dart';
@@ -10,26 +11,45 @@ class MyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<HomeViewModel>();
+    final localizations = AppLocalizations.of(context);
+    final appState = MyApp.of(context);
     final shoppingListViewModel = context.watch<ShoppingListViewModel>();
     final productsViewModel = context.watch<ProductsViewModel>();
     final shoppingLists = shoppingListViewModel.shoppingList;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(viewModel.title),
+          title: Text(localizations.appTitle),
           actions: [
             IconButton(
-                onPressed: () {},
-                icon: CircleAvatar(
-                  radius: 26,
-                  backgroundColor: Colors.grey.shade300,
-                  child: const Text(
-                    "S",
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                ))
+              onPressed: appState.toggleLocale,
+              tooltip: localizations.languageToggleTooltip,
+              icon: const Icon(Icons.language),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 8),
+              child: Center(
+                child: Text(
+                  isArabic
+                      ? localizations.switchToEnglish
+                      : localizations.switchToArabic,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: CircleAvatar(
+                radius: 26,
+                backgroundColor: Colors.grey.shade300,
+                child: Text(
+                  localizations.profileInitial,
+                  style: const TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ),
+            )
           ],
         ),
         body: Container(
@@ -51,40 +71,38 @@ class MyHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // waiting loading dialoge
                   if (shoppingListViewModel.isLoading)
                     const Center(
                       child: CircularProgressIndicator(),
                     )
-                  // show error message for loading shopping list
                   else if (shoppingListViewModel.errorMessage != null)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          shoppingListViewModel.errorMessage!,
+                          localizations.unableToLoadShoppingList(
+                            shoppingListViewModel.errorMessage!,
+                          ),
                           style: const TextStyle(color: Colors.redAccent),
                         ),
                         const SizedBox(height: 12),
                         FilledButton(
                           onPressed: shoppingListViewModel.loadShoppingList,
-                          child: const Text("Retry"),
+                          child: Text(localizations.retry),
                         ),
                       ],
                     )
-                  // show empty shoppling list
                   else if (shoppingLists.isEmpty)
                     Center(
-                      child: Text("No shopping lists available."),
+                      child: Text(localizations.noShoppingListsAvailable),
                     )
-                  // show shoping list
                   else
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Choose a shopping list",
+                            localizations.chooseShoppingList,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -94,20 +112,20 @@ class MyHome extends StatelessWidget {
                             onPressed: () {
                               // TODO handle add new product for a list
                             },
+                            tooltip: localizations.addShoppingListTooltip,
                             icon: const Icon(Icons.add),
                           ),
                         ]),
-
                   if (shoppingLists.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
                       value: productsViewModel.selectedListId,
                       isExpanded: true,
                       decoration: InputDecoration(
-                        hintText: "Select a shopping list",
+                        hintText: localizations.shoppingListDropdownHint,
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsetsDirectional.symmetric(
                           horizontal: 16,
                           vertical: 14,
                         ),

@@ -148,7 +148,7 @@ class ShoppingListViewModel extends ChangeNotifier {
       ];
       //TODO End testing Data
     } catch (error) {
-      _errorMessage = 'Unable to load Shopping List.\n$error';
+      _errorMessage = error.toString();
       _shoppingList = const [];
     } finally {
       _isLoading = false;
