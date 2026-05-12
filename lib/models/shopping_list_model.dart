@@ -29,6 +29,7 @@ class ShoppingListModel {
                       id: '',
                       title: product.toString(),
                       description: '',
+                      imageUrl: '',
                       quantity: 0,
                       measurement: '',
                       bring: false,

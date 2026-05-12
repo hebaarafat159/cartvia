@@ -31,6 +31,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا توجد منتجات متاحة في قائمة التسوق هذه.';
 
   @override
+  String get shareListAction => 'مشاركة';
+
+  @override
+  String get notifyChangesAction => 'إشعار بالتغييرات';
+
+  @override
   String get addShoppingListTooltip => 'إضافة قائمة تسوق';
 
   @override

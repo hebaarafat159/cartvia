@@ -31,6 +31,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'No products available for this shopping list.';
 
   @override
+  String get shareListAction => 'Share';
+
+  @override
+  String get notifyChangesAction => 'Notify Changes';
+
+  @override
   String get addShoppingListTooltip => 'Add shopping list';
 
   @override

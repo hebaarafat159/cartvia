@@ -47,7 +47,13 @@ class ProductsListView extends StatelessWidget {
               : ListView.separated(
                   itemCount: productsViewModel.products.length,
                   separatorBuilder: (_, __) =>
-                      const SizedBox(height: AppSpacing.large),
+                      Padding(
+                        padding: AppSpacing.dividerIndent,
+                        child: Divider(
+                          height: AppSpacing.section,
+                          color: AppColors.divider,
+                        ),
+                      ),
                   itemBuilder: (context, index) {
                     final product = productsViewModel.products[index];
                     final details = [
@@ -63,6 +69,7 @@ class ProductsListView extends StatelessWidget {
                             BorderRadius.circular(AppSizes.radiusLarge),
                       ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: AppSizes.checkboxSize,
@@ -83,6 +90,8 @@ class ProductsListView extends StatelessWidget {
                               },
                             ),
                           ),
+                          const SizedBox(width: AppSpacing.large),
+                          _ProductImage(imageUrl: product.imageUrl),
                           const SizedBox(width: AppSpacing.large),
                           Expanded(
                             child: Column(
@@ -122,7 +131,108 @@ class ProductsListView extends StatelessWidget {
                   },
                 ),
         ),
+        Padding(
+          padding: AppSpacing.buttonTopPadding,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isCompact = constraints.maxWidth < 420;
+
+              if (isCompact) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FilledButton(
+                      onPressed: () {
+                        // TODO handle sharing the selected list or products
+                      },
+                      child: Text(localizations.shareListAction),
+                    ),
+                    const SizedBox(height: AppSpacing.large),
+                    OutlinedButton(
+                      onPressed: () {
+                        // TODO handle subscribing to product change updates
+                      },
+                      child: Text(localizations.notifyChangesAction),
+                    ),
+                  ],
+                );
+              }
+
+              return Row(
+                children: [
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () {
+                        // TODO handle sharing the selected list or products
+                      },
+                      child: Text(localizations.shareListAction),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.large),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        // TODO handle subscribing to product change updates
+                      },
+                      child: Text(localizations.notifyChangesAction),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class _ProductImage extends StatelessWidget {
+  const _ProductImage({required this.imageUrl});
+
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(AppSizes.radiusMedium);
+
+    if (imageUrl.isEmpty) {
+      return _ProductImagePlaceholder(borderRadius: borderRadius);
+    }
+
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: Image.network(
+        imageUrl,
+        width: AppSizes.productImageSize,
+        height: AppSizes.productImageSize,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) =>
+            _ProductImagePlaceholder(borderRadius: borderRadius),
+      ),
+    );
+  }
+}
+
+class _ProductImagePlaceholder extends StatelessWidget {
+  const _ProductImagePlaceholder({required this.borderRadius});
+
+  final BorderRadius borderRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: AppSizes.productImageSize,
+      height: AppSizes.productImageSize,
+      decoration: BoxDecoration(
+        color: AppColors.imagePlaceholderBackground,
+        borderRadius: borderRadius,
+      ),
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.image_outlined,
+        color: AppColors.textTertiary,
+      ),
     );
   }
 }

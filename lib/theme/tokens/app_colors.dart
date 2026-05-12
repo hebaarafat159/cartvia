@@ -21,4 +21,6 @@ abstract final class AppColors {
   static final textSecondary = Colors.grey.shade700;
   static final textTertiary = Colors.grey.shade600;
   static final borderSubtle = Colors.grey.shade300;
+  static final divider = Colors.grey.shade300;
+  static final imagePlaceholderBackground = Colors.grey.shade200;
 }

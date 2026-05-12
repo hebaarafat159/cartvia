@@ -40,6 +40,8 @@ abstract class AppLocalizations {
   String get noShoppingListsAvailable;
   String get selectShoppingListToViewProducts;
   String get noProductsAvailableForShoppingList;
+  String get shareListAction;
+  String get notifyChangesAction;
   String get addShoppingListTooltip;
   String get addProductTooltip;
   String get languageToggleTooltip;
