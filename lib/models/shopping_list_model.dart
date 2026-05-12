@@ -29,7 +29,7 @@ class ShoppingListModel {
                       id: '',
                       title: product.toString(),
                       description: '',
-                      imageUrl: '',
+                      images: const [],
                       quantity: 0,
                       measurement: '',
                       bring: false,
@@ -39,5 +39,14 @@ class ShoppingListModel {
               .toList()
           : const [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'products': products.map((product) => product.toJson()).toList(),
+    };
   }
 }

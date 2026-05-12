@@ -39,7 +39,9 @@ abstract final class AppSpacing {
       EdgeInsets.only(bottom: cardMarginBottom);
   static const EdgeInsets buttonTopPadding = EdgeInsets.only(top: xLarge);
   static const EdgeInsetsGeometry dividerIndent =
-      EdgeInsetsDirectional.only(start: checkboxAndImageOffset);
+      EdgeInsetsDirectional.only(start: productContentOffset);
+  static const EdgeInsetsGeometry productImagesPadding =
+      EdgeInsetsDirectional.only(top: large);
 
-  static const double checkboxAndImageOffset = 120;
+  static const double productContentOffset = 48;
 }

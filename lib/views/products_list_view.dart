@@ -69,7 +69,7 @@ class ProductsListView extends StatelessWidget {
                             BorderRadius.circular(AppSizes.radiusLarge),
                       ),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
                             width: AppSizes.checkboxSize,
@@ -91,7 +91,7 @@ class ProductsListView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: AppSpacing.large),
-                          _ProductImage(imageUrl: product.imageUrl),
+                          _ProductImage(imageUrl: product.primaryImage),
                           const SizedBox(width: AppSpacing.large),
                           Expanded(
                             child: Column(
