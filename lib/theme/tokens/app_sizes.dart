@@ -2,6 +2,7 @@ abstract final class AppSizes {
   static const double avatarRadius = 26;
   static const double checkboxSize = 36;
   static const double productImageSize = 56;
+  static const double twoPaneMinWidth = 900;
 
   static const double radiusSmall = 8;
   static const double radiusMedium = 16;

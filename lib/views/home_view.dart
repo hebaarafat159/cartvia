@@ -1,5 +1,6 @@
 import 'package:cartvia_project/app/app.dart';
 import 'package:cartvia_project/l10n/app_localizations.dart';
+import 'package:cartvia_project/models/shopping_list_model.dart';
 import 'package:cartvia_project/theme/tokens/app_colors.dart';
 import 'package:cartvia_project/theme/tokens/app_sizes.dart';
 import 'package:cartvia_project/theme/tokens/app_spacing.dart';
@@ -102,55 +103,50 @@ class MyHome extends StatelessWidget {
                   else if (shoppingLists.isEmpty)
                     Center(
                       child: Text(localizations.noShoppingListsAvailable),
-                    )
-                  else
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            localizations.chooseShoppingList,
-                            style: const TextStyle(
-                              fontSize: AppSizes.sectionLabelFont,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              // TODO handle add new product for a list
-                            },
-                            tooltip: localizations.addShoppingListTooltip,
-                            icon: const Icon(Icons.add),
-                          ),
-                        ]),
-                  if (shoppingLists.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.large),
-                    DropdownButtonFormField<String>(
-                      value: productsViewModel.selectedListId,
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        hintText: localizations.shoppingListDropdownHint,
-                        filled: true,
-                        fillColor: AppColors.surface,
-                        contentPadding: AppSpacing.dropdownContentPadding,
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.radiusMedium),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      items: shoppingLists
-                          .map(
-                            (shoppingList) => DropdownMenuItem<String>(
-                              value: shoppingList.id,
-                              child: Text(shoppingList.title),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: productsViewModel.setSelectedListId,
                     ),
-                    const SizedBox(height: AppSpacing.xxxLarge),
-                    const Expanded(
-                      child: ProductsListView(),
+                  if (shoppingLists.isNotEmpty) ...[
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isWideLayout =
+                              constraints.maxWidth >= AppSizes.twoPaneMinWidth;
+
+                          final savedShoppingListsSection =
+                              _SavedShoppingListsSection(
+                                isWideLayout: isWideLayout,
+                                selectedListId: productsViewModel.selectedListId,
+                                shoppingLists: shoppingLists,
+                                onChanged: productsViewModel.setSelectedListId,
+                              );
+
+                          if (isWideLayout) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: savedShoppingListsSection,
+                                ),
+                                const SizedBox(width: AppSpacing.xxxLarge),
+                                const Expanded(
+                                  flex: 2,
+                                  child: ProductsListView(),
+                                ),
+                              ],
+                            );
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              savedShoppingListsSection,
+                              const SizedBox(height: AppSpacing.xxxLarge),
+                              const Expanded(
+                                child: ProductsListView(),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ],
@@ -158,5 +154,137 @@ class MyHome extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class _SavedShoppingListsSection extends StatelessWidget {
+  const _SavedShoppingListsSection({
+    required this.isWideLayout,
+    required this.selectedListId,
+    required this.shoppingLists,
+    required this.onChanged,
+  });
+
+  final bool isWideLayout;
+  final String? selectedListId;
+  final List<ShoppingListModel> shoppingLists;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
+      ),
+      child: Padding(
+        padding: AppSpacing.cardPadding,
+        child: Column(
+          mainAxisSize: isWideLayout ? MainAxisSize.max : MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  localizations.chooseShoppingList,
+                  style: const TextStyle(
+                    fontSize: AppSizes.sectionLabelFont,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // TODO handle add new product for a list
+                  },
+                  tooltip: localizations.addShoppingListTooltip,
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.large),
+            if (isWideLayout)
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+                  child: ListView.separated(
+                    itemCount: shoppingLists.length,
+                    separatorBuilder: (_, __) => Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: AppColors.divider,
+                    ),
+                    itemBuilder: (context, index) {
+                      final shoppingList = shoppingLists[index];
+                      final isSelected = shoppingList.id == selectedListId;
+
+                      return Material(
+                        color: isSelected
+                            ? AppColors.primaryAccent.withValues(alpha: 0.12)
+                            : Colors.transparent,
+                        child: InkWell(
+                          onTap: () => onChanged(shoppingList.id),
+                          child: Padding(
+                            padding: AppSpacing.cardPadding,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    shoppingList.title,
+                                    style: TextStyle(
+                                      fontSize: AppSizes.sectionLabelFont,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w500,
+                                      color: isSelected
+                                          ? AppColors.primaryAccent
+                                          : AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                                if (isSelected)
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: AppColors.primaryAccent,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            else
+              DropdownButtonFormField<String>(
+                value: selectedListId,
+                isExpanded: true,
+                decoration: InputDecoration(
+                  hintText: localizations.shoppingListDropdownHint,
+                  filled: true,
+                  fillColor: AppColors.surface,
+                  contentPadding: AppSpacing.dropdownContentPadding,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                items: shoppingLists
+                    .map(
+                      (shoppingList) => DropdownMenuItem<String>(
+                        value: shoppingList.id,
+                        child: Text(shoppingList.title),
+                      ),
+                    )
+                    .toList(),
+                onChanged: onChanged,
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
