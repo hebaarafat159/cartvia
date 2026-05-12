@@ -1,4 +1,7 @@
 import 'package:cartvia_project/l10n/app_localizations.dart';
+import 'package:cartvia_project/theme/tokens/app_colors.dart';
+import 'package:cartvia_project/theme/tokens/app_sizes.dart';
+import 'package:cartvia_project/theme/tokens/app_spacing.dart';
 import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +28,7 @@ class ProductsListView extends StatelessWidget {
           Text(
             localizations.shoppingListItemsTitle(shoppingList.title),
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: AppSizes.sectionLabelFont,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -37,13 +40,14 @@ class ProductsListView extends StatelessWidget {
             icon: const Icon(Icons.add),
           ),
         ]),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.xxxLarge),
         Expanded(
           child: productsViewModel.products.isEmpty
               ? Text(localizations.noProductsAvailableForShoppingList)
               : ListView.separated(
                   itemCount: productsViewModel.products.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  separatorBuilder: (_, __) =>
+                      const SizedBox(height: AppSpacing.large),
                   itemBuilder: (context, index) {
                     final product = productsViewModel.products[index];
                     final details = [
@@ -52,21 +56,23 @@ class ProductsListView extends StatelessWidget {
                     ].join(' ');
 
                     return Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: AppSpacing.cardPadding,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
+                        color: AppColors.surface,
+                        borderRadius:
+                            BorderRadius.circular(AppSizes.radiusLarge),
                       ),
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 36,
-                            height: 36,
+                            width: AppSizes.checkboxSize,
+                            height: AppSizes.checkboxSize,
                             child: Checkbox(
                               value: product.bring,
-                              activeColor: const Color(0xFFB84E2A),
+                              activeColor: AppColors.primaryAccent,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius:
+                                    BorderRadius.circular(AppSizes.radiusSmall),
                               ),
                               onChanged: (value) {
                                 if (value == null) return;
@@ -77,7 +83,7 @@ class ProductsListView extends StatelessWidget {
                               },
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: AppSpacing.large),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,26 +91,26 @@ class ProductsListView extends StatelessWidget {
                                 Text(
                                   product.title,
                                   style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: AppSizes.sectionLabelFont,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 if (product.description.isNotEmpty ||
                                     details.isNotEmpty)
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: AppSpacing.xSmall),
                                 if (product.description.isNotEmpty)
                                   Text(
                                     product.description,
                                     style: TextStyle(
-                                      color: Colors.grey.shade700,
+                                      color: AppColors.textSecondary,
                                     ),
                                   ),
                                 if (details.isNotEmpty)
                                   Text(
                                     details,
                                     style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 13,
+                                      color: AppColors.textTertiary,
+                                      fontSize: AppSizes.bodySmallFont,
                                     ),
                                   ),
                               ],

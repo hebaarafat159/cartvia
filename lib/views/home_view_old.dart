@@ -1,4 +1,7 @@
 import 'package:cartvia_project/viewmodels/home_view_model.dart';
+import 'package:cartvia_project/theme/tokens/app_colors.dart';
+import 'package:cartvia_project/theme/tokens/app_sizes.dart';
+import 'package:cartvia_project/theme/tokens/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +22,8 @@ class HomeView extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFF3EEE8),
-              Color(0xFFEDE6DF),
+              AppColors.backgroundGradientTop,
+              AppColors.backgroundGradientBottom,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -29,7 +32,7 @@ class HomeView extends StatelessWidget {
         child: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: AppSpacing.pagePadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,42 +47,46 @@ class HomeView extends StatelessWidget {
                           "APRIL 2026",
                           style: TextStyle(
                             letterSpacing: 2,
-                            color: Color(0xFFB84E2A),
+                            color: AppColors.primaryAccent,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(height: 6),
+                        SizedBox(height: AppSpacing.small),
                         Text(
                           "Saved Lists",
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: AppSizes.legacyHeroTitleFont,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                     CircleAvatar(
-                      radius: 26,
-                      backgroundColor: Colors.grey.shade300,
+                      radius: AppSizes.avatarRadius,
+                      backgroundColor: AppColors.avatarBackground,
                       child: const Text(
                         "S",
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                        style: TextStyle(
+                          fontSize: AppSizes.profileInitialFont,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     )
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: AppSpacing.screenGap),
 
                 /// ORANGE CARD (Gradient)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: AppSpacing.featureCardPadding,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(28),
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.radiusXXLarge),
                     gradient: const LinearGradient(
                       colors: [
-                        Color(0xFFEB6B3F),
-                        Color(0xFFF39A61),
+                        AppColors.primaryAccentLight,
+                        AppColors.primaryAccentSoft,
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -94,27 +101,27 @@ class HomeView extends StatelessWidget {
                           Text(
                             "YOUR LISTS",
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: AppColors.surfaceMuted,
                               letterSpacing: 2,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: AppSpacing.regular),
                           Text(
                             "Saved grocery lists",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
+                              color: AppColors.surface,
+                              fontSize: AppSizes.legacyCardTitleFont,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 12),
+                        padding: AppSpacing.ctaPadding,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(18),
+                          color: AppColors.surface.withValues(alpha: 0.9),
+                          borderRadius:
+                              BorderRadius.circular(AppSizes.radiusLarge),
                         ),
                         child: const Text(
                           "New List",
@@ -127,28 +134,28 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: AppSpacing.screenGap),
 
                 /// COLLECTIONS
                 const Text(
                   "COLLECTIONS",
                   style: TextStyle(
                     letterSpacing: 2,
-                    color: Color(0xFFB84E2A),
+                    color: AppColors.primaryAccent,
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: AppSpacing.regular),
 
                 const Text(
                   "Choose a saved list",
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: AppSizes.legacySectionTitleFont,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.xxxLarge),
 
                 /// LIST ITEMS
                 Expanded(
@@ -192,12 +199,13 @@ class HomeView extends StatelessWidget {
     bool highlight = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(18),
+      margin: AppSpacing.listCardMargin,
+      padding: AppSpacing.listCardPadding,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(24),
-        border: highlight ? Border.all(color: const Color(0xFFE6B8A5)) : null,
+        color: AppColors.surface.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(AppSizes.radiusXLarge),
+        border:
+            highlight ? Border.all(color: AppColors.cardHighlightBorder) : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,28 +215,27 @@ class HomeView extends StatelessWidget {
               subtitle,
               style: const TextStyle(
                 letterSpacing: 2,
-                color: Color(0xFFB84E2A),
+                color: AppColors.primaryAccent,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: AppSpacing.small),
             Text(
               title,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: AppSizes.profileInitialFont,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ]),
           Row(
             children: [
-              Text(items, style: const TextStyle(color: Colors.grey)),
-              const SizedBox(width: 12),
+              Text(items, style: const TextStyle(color: AppColors.textMuted)),
+              const SizedBox(width: AppSpacing.large),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: AppSpacing.pillPadding,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(AppSizes.radiusLarge),
+                  border: Border.all(color: AppColors.borderSubtle),
                 ),
                 child: Text(
                   action,

@@ -1,6 +1,7 @@
 import 'package:cartvia_project/data/api_service.dart';
 import 'package:cartvia_project/data/repositories/shopping_list_repository.dart';
 import 'package:cartvia_project/l10n/app_localizations.dart';
+import 'package:cartvia_project/theme/tokens/app_colors.dart';
 import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:cartvia_project/views/home_view.dart';
@@ -63,8 +64,7 @@ class MyAppState extends State<MyApp> {
         supportedLocales: AppLocalizations.supportedLocales,
         locale: _locale,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 244, 122, 40)),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.seed),
           useMaterial3: true,
         ),
         home: const MyHome(),

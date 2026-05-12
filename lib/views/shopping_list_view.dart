@@ -1,4 +1,5 @@
 import 'package:cartvia_project/models/shopping_list_model.dart';
+import 'package:cartvia_project/theme/tokens/app_spacing.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class ShoppingListView extends StatelessWidget {
           if (viewModel.errorMessage != null) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: AppSpacing.dialogPadding,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -29,7 +30,7 @@ class ShoppingListView extends StatelessWidget {
                       viewModel.errorMessage!,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.xLarge),
                     FilledButton(
                       onPressed: viewModel.loadShoppingList,
                       child: const Text('Retry'),
@@ -45,9 +46,10 @@ class ShoppingListView extends StatelessWidget {
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.all(16),
+            padding: AppSpacing.listPadding,
             itemCount: viewModel.shoppingList.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) =>
+                const SizedBox(height: AppSpacing.large),
             itemBuilder: (context, index) {
               final shoppingList = viewModel.shoppingList[index];
               return _ShoppingList(shoppingList: shoppingList);

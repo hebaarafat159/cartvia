@@ -1,5 +1,8 @@
 import 'package:cartvia_project/app/app.dart';
 import 'package:cartvia_project/l10n/app_localizations.dart';
+import 'package:cartvia_project/theme/tokens/app_colors.dart';
+import 'package:cartvia_project/theme/tokens/app_sizes.dart';
+import 'package:cartvia_project/theme/tokens/app_spacing.dart';
 import 'package:cartvia_project/viewmodels/products_view_model.dart';
 import 'package:cartvia_project/viewmodels/shopping_list_view_model.dart';
 import 'package:cartvia_project/views/products_list_view.dart';
@@ -29,7 +32,7 @@ class MyHome extends StatelessWidget {
               icon: const Icon(Icons.language),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8),
+              padding: AppSpacing.toggleLabelPadding,
               child: Center(
                 child: Text(
                   isArabic
@@ -42,11 +45,14 @@ class MyHome extends StatelessWidget {
             IconButton(
               onPressed: () {},
               icon: CircleAvatar(
-                radius: 26,
-                backgroundColor: Colors.grey.shade300,
+                radius: AppSizes.avatarRadius,
+                backgroundColor: AppColors.avatarBackground,
                 child: Text(
                   localizations.profileInitial,
-                  style: const TextStyle(fontSize: 18, color: Colors.black),
+                  style: const TextStyle(
+                    fontSize: AppSizes.profileInitialFont,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             )
@@ -57,8 +63,8 @@ class MyHome extends StatelessWidget {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFFF3EEE8),
-                Color(0xFFEDE6DF),
+                AppColors.backgroundGradientTop,
+                AppColors.backgroundGradientBottom,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -67,7 +73,7 @@ class MyHome extends StatelessWidget {
           child: SafeArea(
             top: false,
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: AppSpacing.pagePadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,9 +90,9 @@ class MyHome extends StatelessWidget {
                           localizations.unableToLoadShoppingList(
                             shoppingListViewModel.errorMessage!,
                           ),
-                          style: const TextStyle(color: Colors.redAccent),
+                          style: const TextStyle(color: AppColors.error),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.large),
                         FilledButton(
                           onPressed: shoppingListViewModel.loadShoppingList,
                           child: Text(localizations.retry),
@@ -104,7 +110,7 @@ class MyHome extends StatelessWidget {
                           Text(
                             localizations.chooseShoppingList,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: AppSizes.sectionLabelFont,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -117,20 +123,18 @@ class MyHome extends StatelessWidget {
                           ),
                         ]),
                   if (shoppingLists.isNotEmpty) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: AppSpacing.large),
                     DropdownButtonFormField<String>(
                       value: productsViewModel.selectedListId,
                       isExpanded: true,
                       decoration: InputDecoration(
                         hintText: localizations.shoppingListDropdownHint,
                         filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
+                        fillColor: AppColors.surface,
+                        contentPadding: AppSpacing.dropdownContentPadding,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius:
+                              BorderRadius.circular(AppSizes.radiusMedium),
                           borderSide: BorderSide.none,
                         ),
                       ),
@@ -144,7 +148,7 @@ class MyHome extends StatelessWidget {
                           .toList(),
                       onChanged: productsViewModel.setSelectedListId,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSpacing.xxxLarge),
                     const Expanded(
                       child: ProductsListView(),
                     ),
